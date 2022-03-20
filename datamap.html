@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet'>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Data Map</title>
+</head>
+
+<body>
+    <div class="container">
+        <div id="filter-box">
+            <form>
+                <select id="data-select" name="data-select">
+                    <option value="noise">Noise</option>
+                    <option value="temperature">Temperature</option>
+                    <option value="air-quality">Air Quality</option>
+                    <option value="pressure">Air Pressure</option>
+                    <option value="humidity">Humidity</option>
+                </select>
+
+                <label for="start-date">Start Date</label>
+                <input type="date" id="start-date" name="start-date">
+
+                <label for="end-date">End Date</label>
+                <input type="date" id="end-date" name="end-date">
+
+                <label for="start-time">Start Time</label>
+                <input type="time" id="start-time" name="start-time">
+
+                <label for="end-time">End Time</label>
+                <input type="time" id="end-time" name="end-time">
+
+                <input type="button" value="Submit" name="submit-button">
+
+            </form>
+        </div>
+
+
+        <div id="map"></div>
+    </div>
+    <script src="map.js"></script>
+</body>
+
+</html>
