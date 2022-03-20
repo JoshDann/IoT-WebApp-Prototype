@@ -6,17 +6,34 @@ const map = new mapboxgl.Map({
     zoom: 1
 });
 
-map.addControl(
-    new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl,
-        flyTo: true,
-        autoComplete: true,
-        fuzzyMatch: true
-    })
-)
-
-map.on('load', function(){
-
+const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    flyTo: true,
+    autoComplete: true,
+    fuzzyMatch: true,
+    marker: false
 });
+
+let lngLat = {lng: 0, lat: 0};
+
+geocoder.on('result', search => {
+    const marker = new mapboxgl.Marker({
+        draggable: true
+    })
+
+    marker.setLngLat(search.result.center);
+    lngLat.lng = search.result.center[0];
+    lngLat.lat = search.result.center[1];
+    console.log(lngLat);
+
+    marker.addTo(map);
+    marker.on('dragend', function(search){
+        lngLat = search.target.getLngLat();
+        console.log(lngLat);
+    })
+})
+
+map.addControl(geocoder);
+
 
