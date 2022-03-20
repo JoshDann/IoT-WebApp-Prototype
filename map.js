@@ -6,7 +6,17 @@ const map = new mapboxgl.Map({
     zoom: 1
 });
 
+map.addControl(
+    new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        flyTo: true,
+        autoComplete: true,
+        fuzzyMatch: true
+    })
+)
+
 map.on('load', function(){
-console.log("Map loaded");
+
 });
 
