@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="http://fonts.cdnfonts.com/css/renogare" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style/style.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet'>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    
+    <script src="js/map.js" defer></script>
+
+    <link href="http://fonts.cdnfonts.com/css/renogare" rel="stylesheet">
+
+    <title> <%= pageTitle %>  </title>
+</head>
+
+<body>
+    <form action="/" method="post">
+
+        <h1> Audeci </h1>
+        <h3> Choose Parameters </h3>
+
+        <ul>
+            <li>
+                <select id="data-select" name="data_select">
+                    <option value="noise">    Noise        </option>
+                    <option value="temp">     Temperature  </option>
+                    <option value="air">      Air Quality  </option>
+                    <option value="pressure"> Air Pressure </option>
+                    <option value="humidity"> Humidity     </option>
+                </select>
+            </li>
+            <li>
+                <label for="start-date">Start Date</label>
+                <input type="date" id="start-date" name="start-date">
+            </li>
+            <li>
+                <label for="end-date">End Date</label>
+                <input type="date" id="end-date" name="end-date">
+            </li>
+            <li>
+                <label for="start-time">Start Time</label>
+                <input type="time" id="start-time" name="start-time">
+            </li>
+            <li>
+                <label for="end-time">End Time</label>
+                <input type="time" id="end-time" name="end-time">
+            </li>
+            <li>
+                <button type="submit" value="Submit" name="submit-button">Submit</button>
+            </li>
+        </ul>
+
+
+
+    </form>
+
+    <div id="map"></div>
+</body>
+
+</html>
