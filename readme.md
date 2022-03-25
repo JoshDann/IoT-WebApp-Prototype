@@ -6,3 +6,7 @@ Make sure you install these before trying to run
 - Body Parser   (npm i body-parser)
 - Mongoose      (npm i mongoose)
 
+## Developer Dependencies
+The following packages are required for "npm run devStart"
+- Nodemon       (npm i nodemon)
+

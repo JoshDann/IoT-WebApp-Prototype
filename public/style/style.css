@@ -1,8 +1,273 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-family: "renogare", sans-serif;
+  font-weight: 400;
+}
+
+html {
+  --defaultOpacity: 0.25;
+  --colorUI: rgb(239, 241, 248);
+  --colorDarkOpacity: rgba(4, 14, 47, 0.3);
+  --colorDarkModal: rgba(4, 14, 47, 0.6);
+  --defaultOutline: var(--colorDarkOpacity) 0.5rem solid;
+}
+
+body {
+  position: relative;
+  background: #6b87ac;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Need this for map to show */
 #map {
   height: 100vh;
   width: 100vw;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#form_map {
+  position: absolute;
+  top: 10%;
+  left: -7.5%;
+  z-index: 3;
+  height: 80%;
+  width: 20vw;
+  outline: var(--defaultOutline);
+  color: #040e2f;
+  display: block;
+  padding: 1rem;
+  padding-left: 6%;
+  background: var(--colorUI);
+  -webkit-transition: left 500ms, opacity 500ms;
+  transition: left 500ms, opacity 500ms;
+  border-radius: 0.5rem;
+  opacity: var(--defaultOpacity);
+}
+
+#form_map label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+#form_map ul {
+  list-style-type: none;
+  position: relative;
+}
+
+#form_map ul li input {
+  cursor: pointer;
+}
+
+#form_map ul li:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+#form_map:hover {
+  left: -3.5%;
+  opacity: 1;
+}
+
+button, input, input[type="submit"], input[type="reset"], select, option {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  outline: inherit;
+  cursor: pointer;
+}
+
+input, select {
+  max-width: 95%;
+  width: 75%;
+  outline: var(--defaultOutline);
+  outline-width: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 100vw;
+  background-color: var(--colorUI);
+}
+
+.form_button {
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  color: #fff;
+  border-radius: 100vw;
+  cursor: pointer;
+  -webkit-transition: 200ms -webkit-transform, 200ms -webkit-box-shadow;
+  transition: 200ms -webkit-transform, 200ms -webkit-box-shadow;
+  transition: 200ms transform, 200ms box-shadow;
+  transition: 200ms transform, 200ms box-shadow, 200ms -webkit-transform, 200ms -webkit-box-shadow;
+}
+
+.form_button:active {
+  -webkit-transform: scale(0.95);
+          transform: scale(0.95);
+}
+
+.submit {
+  background: #2cc973;
+}
+
+.register {
+  background: #c9782c;
+}
+
+.submit:hover {
+  -webkit-box-shadow: 0 0 1rem #27e696;
+          box-shadow: 0 0 1rem #27e696;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+.register:hover {
+  -webkit-box-shadow: 0 0 1rem #e76224;
+          box-shadow: 0 0 1rem #e76224;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+.mapboxgl-ctrl-geocoder--input {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  background-color: var(--colorUI);
+  opacity: var(--defaultOpacity);
+  border: none;
+  outline: var(--defaultOutline);
+  border-radius: 0.5rem;
+  margin-top: 2.5vh;
+  margin-right: 5vw;
+  -webkit-transition: opacity 500ms;
+  transition: opacity 500ms;
+  cursor: text;
+}
+
+.mapboxgl-ctrl-geocoder--input:focus, .mapboxgl-ctrl-geocoder--input:hover {
+  opacity: 1;
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+  display: none;
+}
+
+.mapboxgl-ctrl-geocoder--icon {
+  margin: 1rem;
+  opacity: var(--defaultOpacity);
+  -webkit-transition: opacity 500ms;
+  transition: opacity 500ms;
+}
+
+.mapboxgl-ctrl-geocoder--icon:hover {
+  opacity: 1;
+}
+
+.suggestions {
+  list-style-type: none;
+  width: 75%;
+}
+
+.suggestions li {
+  background-color: var(--colorUI);
+  opacity: 0.6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  min-width: 15vw;
+  -webkit-transition: opacity 500ms, -webkit-transform 200ms;
+  transition: opacity 500ms, -webkit-transform 200ms;
+  transition: opacity 500ms, transform 200ms;
+  transition: opacity 500ms, transform 200ms, -webkit-transform 200ms;
+}
+
+.suggestions li:not(:first-child) {
+  margin-top: 0.25rem;
+}
+
+.suggestions li:first-child {
+  margin-top: 1rem;
+}
+
+.suggestions li:hover {
+  opacity: 1;
+}
+
+.suggestions li:active {
+  -webkit-transform: scale(0.95);
+          transform: scale(0.95);
+}
+
+#help_modal_wrapper {
+  display: none;
+  background-color: var(--colorDarkModal);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 6;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#help_modal_wrapper #help_modal {
+  width: 60%;
+  height: 60%;
+  background-color: var(--colorUI);
+  outline: var(--defaultOutline);
+  border-radius: 1rem;
+  position: relative;
+  z-index: 9;
+  color: #040e2f;
+}
+
+#help_modal_wrapper #help_modal h3 {
+  text-align: center;
+  font-weight: 800;
+  font-size: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+#help_modal_wrapper #help_modal p {
+  text-align: left;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+#btn_showModal {
+  position: relative;
+  top: 90vh;
+  left: 95vw;
+  z-index: 6;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #040e2f;
+  outline: var(--defaultOutline);
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--colorUI);
+  border-radius: 100vw;
+  opacity: var(--defaultOpacity);
+  -webkit-transition: all 200ms;
+  transition: all 200ms;
+}
+
+#btn_showModal:active {
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
+}
+
+#btn_showModal:hover {
+  opacity: 1;
 }
 /*# sourceMappingURL=style.css.map */
