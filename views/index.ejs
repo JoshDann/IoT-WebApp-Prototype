@@ -14,20 +14,25 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
     
     <script src="js/map.js" defer></script>
-
+    <script src="js/modal.js" defer></script>
+    
+    <script src="leaflet-heat.js"></script>
     <link href="http://fonts.cdnfonts.com/css/renogare" rel="stylesheet">
 
-    <title> <%= pageTitle %>  </title>
+    <title> Audeci Map </title>
 </head>
 
 <body>
-    <form action="/" method="post">
+
+    <button id="btn_showModal">?</button>
+
+    <form action="/" method="post" id="form_map">
 
         <h1> Audeci </h1>
-        <h3> Choose Parameters </h3>
 
         <ul>
             <li>
+                <label for="data_select">Choose metric</label>
                 <select id="data-select" name="data_select">
                     <option value="noise">    Noise        </option>
                     <option value="temp">     Temperature  </option>
@@ -53,15 +58,31 @@
                 <input type="time" id="end-time" name="end-time">
             </li>
             <li>
-                <button type="submit" value="Submit" name="submit-button">Submit</button>
+                <button class="form_button submit" type="submit" value="Submit" name="submit-button">Submit</button>
+            </li>
+            <li>
+                <a href="/register">
+                    <button class="form_button register" type="button">Register</button>
+                </a>
             </li>
         </ul>
-
-
 
     </form>
 
     <div id="map"></div>
+
+    <div id="help_modal_wrapper">
+        <div id="help_modal">
+            <h3>What does Audeci Do?</h3>
+            <p>
+                Audeci is a network of sensors that passively collects data such as noise levels and temperature readings.
+                With the Audeci map, you can see the readings of a given area
+                <br>
+                <br>
+                Use the search box at the top right of the screen to search for a location, and tweak variables in the panel on the left to fine tune your search.
+            </p>
+        </div>
+    </div>
 </body>
 
 </html>
