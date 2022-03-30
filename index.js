@@ -35,7 +35,11 @@ app.get("/", (req, res) => {
 
 //route returns data to map page for visualisation
 app.get("/data", (req, res) =>{
+    
 
+
+    //jsonData is placeholder test file for getting the map working
+    //need to replace with call to db to grab relevant info 
     return res.json(jsonData);
 })
 

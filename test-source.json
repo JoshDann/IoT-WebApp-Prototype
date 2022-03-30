@@ -15,7 +15,8 @@
                 "date": "12-2-2022",
                 "readings": {
                     "noise": 100
-                }
+                },
+                "reading": 50
             }
         },
         {
@@ -32,7 +33,26 @@
                 "date": "13-2-2022",
                 "readings": {
                     "noise": 90
-                }
+                },
+                "reading" : 100
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    125.8,
+                    10.3
+                ]
+            },
+            "properties": {
+                "_id": 3,
+                "date": "14-2-2022",
+                "readings": {
+                    "noise": 90
+                },
+                "reading" : 0
             }
         }
     ]

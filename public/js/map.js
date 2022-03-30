@@ -6,23 +6,20 @@ const map = new mapboxgl.Map({
     zoom: 1
 });
 
-map.on('load', () => {
-
-});
-
-$('#form_button_submit').click(function(){
-    let formdata = $('#form_map').serializeArray();
-    //console.log(formdata);
-});
-
-
-
-$('#form_map').submit( function(e){
+$('#form_map').submit(function (e) {
     e.preventDefault();
     let formdata = $('#form_map').serializeArray();
-    //console.log(formdata);
-
     let queryString = "index.js/data?";
+
+
+    //removes layer and source if search has already been made and displaying data on map
+    //error occurs if not doing this
+    let source = map.getSource('node-locations-source');
+    if (source != undefined) {
+        map.removeLayer('node-locations-layer');
+        map.removeSource('node-locations-source');
+    }
+
 
     $.get("/data", function(data){
         console.log(data);
@@ -32,44 +29,46 @@ $('#form_map').submit( function(e){
             data: data
         });
 
+        //adds the circles and styles them
         map.addLayer({
-            'id': 'node-locations-layer',
-            'type': 'circle',
-            'source': 'node-locations-source'
+            id: 'node-locations-layer',
+            type: 'circle',
+            source: 'node-locations-source',
+            paint: {
+                'circle-opacity' : 0.5,
+                'circle-radius':
+                    [
+                        //increases circle size as zoom in
+                        //first number is zoom level, 0=zoomed out 22=max zoom in
+                        //second number is pixel size of the circles
+                        'interpolate', ['linear'], ['zoom'],
+                        5, 2,
+                        10, 8,
+                        15, 15,
+                        20, 40
+                    ],
+                'circle-color': {
+                    'property': 'reading',
+                    'stops': [
+                        [0, 'green'],
+                        [50, 'orange'],
+                        [100, 'red']                    
+                    ]
+                }
+                
+            }
         })
     });
 });
 
-//Geocoder stuff, don't know if we need for the regular map page
-
-// const geocoder = new MapboxGeocoder({
-//     accessToken: mapboxgl.accessToken,
-//     mapboxgl: mapboxgl,
-//     flyTo: true,
-//     autoComplete: true,
-//     fuzzyMatch: true,
-//     marker: false
-// });
-
-// let lngLat = {lng: 0, lat: 0};
-
-// geocoder.on('result', search => {
-//     const marker = new mapboxgl.Marker({
-//         draggable: true
-//     })
-
-//     marker.setLngLat(search.result.center);
-//     lngLat.lng = search.result.center[0];
-//     lngLat.lat = search.result.center[1];
-//     console.log(lngLat);
-
-//     marker.addTo(map);
-//     marker.on('dragend', function(search){
-//         lngLat = search.target.getLngLat();
-//         console.log(lngLat);
-//     })
-// })
-
-// map.addControl(geocoder);
+//adds search box to the map so users can find address
+const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    flyTo: true,
+    autoComplete: true,
+    fuzzyMatch: true,
+});
+map.addControl(geocoder);
 
 
