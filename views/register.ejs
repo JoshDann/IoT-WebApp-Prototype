@@ -29,10 +29,23 @@
                 <label for="node_id">Once the marker pin is as close to the node location as possible, input your unique Audeci node ID here: </label>
             </li>
             <li>
-                <input type="text" name="node_id">
+                <input type="text" name="node_id" required>
             </li>
             <li>
-                <button id="form_button_submit" class="submit form_button" type="submit" value="Submit" name="submit-button">Submit</button>
+                <label for="node_lat">Latitude</label>
+                <input id="location_lat" type="text" name="node_lat" required >
+            </li>
+            <li>
+                <label for="node_lng">Longitude</label>
+                <input id="location_lng" type="text" name="node_lng" required >
+            </li>
+            <li>
+                <button id="form_button_submit" class="submit form_button" type="submit" value="Submit">Submit</button>
+            </li>
+            <li>
+                <a href="/">
+                    <button id="form_button_register" class="register form_button" type="button">Back to Map</button>
+                </a>
             </li>
         </ul>
     </form>
