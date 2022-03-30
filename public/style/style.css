@@ -31,7 +31,7 @@ body {
   left: 0;
 }
 
-#form_map {
+.side_form {
   position: absolute;
   top: 10%;
   left: -7.5%;
@@ -50,25 +50,29 @@ body {
   opacity: var(--defaultOpacity);
 }
 
-#form_map label {
+.side_form label {
   display: block;
   margin-bottom: 1rem;
 }
 
-#form_map ul {
+.side_form ul {
   list-style-type: none;
   position: relative;
 }
 
-#form_map ul li input {
+.side_form ul li input {
   cursor: pointer;
 }
 
-#form_map ul li:not(:last-child) {
+.side_form ul li input[type="text"] {
+  cursor: text;
+}
+
+.side_form ul li:not(:last-child) {
   margin-bottom: 2rem;
 }
 
-#form_map:hover {
+.side_form:hover {
   left: -3.5%;
   opacity: 1;
 }
@@ -81,6 +85,10 @@ button, input, input[type="submit"], input[type="reset"], select, option {
   font: inherit;
   outline: inherit;
   cursor: pointer;
+}
+
+input[type="text"] {
+  cursor: text;
 }
 
 input, select {

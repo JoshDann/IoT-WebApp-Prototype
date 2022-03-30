@@ -38,7 +38,7 @@ body {
 
 }
 
-#form_map {
+.side_form {
     position: absolute;
     top: 10%;
     left: -7.5%;
@@ -72,6 +72,7 @@ body {
         position: relative;
         li {
             input { cursor: pointer; }
+            input[type="text"] { cursor: text }
             
         }
         li:not(:last-child) {
@@ -82,7 +83,7 @@ body {
     
 }
 
-#form_map:hover {
+.side_form:hover {
     left: -3.5%;
     opacity: 1;
 }
@@ -97,6 +98,10 @@ button, input, input[type="submit"], input[type="reset"], select, option {
 	font: inherit;
 	outline: inherit;
     cursor: pointer;
+}
+
+input[type="text"] {
+    cursor: text;
 }
 
 input, select {
@@ -284,9 +289,4 @@ select {
 // =============
 // REGISTER PAGE
 // =============
-
-#form_register {
-
-}
-
 
