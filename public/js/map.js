@@ -44,6 +44,12 @@ $('#form_button_submit').click(function (ev) {
 function getReadings() {
     let urlQuery = "?data-selected=" + document.getElementById("data_select").options[document.getElementById("data_select").selectedIndex].value
 
+    let source = map.getSource('nodes_source');
+    if (source != undefined) {
+        map.removeLayer('nodes_layer');
+        map.removeSource('nodes_source');
+    }
+
     $.ajax({
         url: "/data" + urlQuery,
         dataType: "json",
