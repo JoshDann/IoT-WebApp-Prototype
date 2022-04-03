@@ -3,8 +3,8 @@ import Reading
 from json import dumps
 
 class SensorReading:
-    def __init__( self, id=None, reading=Reading ):
-        self.node_id = id
+    def __init__( self, node_id=None, reading=Reading ):
+        self.node_id = node_id
         self.reading = reading
         self.datetime = {
             "date": dt.now().date().strftime("%m/%d/%Y"), 
@@ -12,7 +12,6 @@ class SensorReading:
         }
     def toDict(self):
         return {
-            "node_id": self.node_id, 
             "reading": self.reading.toDict(),
             "datetime": {
                 "date": self.datetime["date"],

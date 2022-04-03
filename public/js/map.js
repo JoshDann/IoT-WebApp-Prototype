@@ -18,10 +18,13 @@ const geocoder = new MapboxGeocoder({
 
 map.addControl(geocoder);
 
+
+
 /**
  * Fired on page load; gets all points
  */
 map.on('load', () => {
+    // adds the circles and styles them
     getReadings()
 });
 
@@ -39,44 +42,48 @@ $('#form_button_submit').click(function (ev) {
  * Add params later on
  */
 function getReadings() {
-    $.getJSON("/data", function (data) {
-        // prints all readings returned by /data
-        data.forEach(reading => { console.table(reading) })
+    let urlQuery = "?data-selected=" + document.getElementById("data_select").options[document.getElementById("data_select").selectedIndex].value
 
-        //adds source to draw the data for drawing the circles
-        map.addSource('node-locations-source', {
-            type: 'geojson',
-            data: data
-        })
+    $.ajax({
+        url: "/data" + urlQuery,
+        dataType: "json",
+        type: "GET",
+        success: function (nodes) {
+            console.table(nodes)
 
-        //adds the circles and styles them
-        map.addLayer({
-            id: 'node-locations-layer',
-            type: 'circle',
-            source: 'node-locations-source',
-            paint: {
-                'circle-opacity': 0.5,
-                'circle-radius':
-                    [
+            map.addSource('nodes_source', {
+                type: 'geojson',
+                data: nodes
+            })
+            // adds the circles and styles them
+            map.addLayer({
+                id: 'nodes_layer',
+                type: 'circle',
+                source: 'nodes_source',
+                paint: {
+                    'circle-opacity': 0.5,
+                    'circle-radius': [
                         //increases circle size as zoom in
                         //first number is zoom level, 0=zoomed out 22=max zoom in
                         //second number is pixel size of the circles
-                        'interpolate', ['linear'], ['zoom'],
-                        5, 2,
-                        10, 8,
-                        15, 15,
-                        20, 40
+                        'interpolate', ['linear'],
+                        ['zoom'],
+                        5, 200,
+                        10, 800,
+                        15, 1500,
+                        20, 4000
                     ],
-                'circle-color': {
-                    'property': 'reading',
-                    'stops': [
-                        [0, 'green'],
-                        [50, 'orange'],
-                        [100, 'red']
-                    ]
+                    'circle-color': {
+                        'property': 'reading',
+                        'stops': [
+                            [0, 'green'],
+                            [50, 'orange'],
+                            [100, 'red']
+                        ]
+                    }
                 }
-            }
-        })
+            })
+        }
     })
 }
 

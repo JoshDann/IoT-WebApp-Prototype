@@ -1,0 +1,24 @@
+{
+    "type": "FeatureCollection",
+    "features": [{
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [57.1482429, -2.0928095]
+        },
+        "properties": {
+            "node_id": "TEST_001",
+            "reading": 12
+        }
+    }, {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-31.9527, 115.8605]
+        },
+        "properties": {
+            "node_id": "TEST_002",
+            "reading": null
+        }
+    }]
+}

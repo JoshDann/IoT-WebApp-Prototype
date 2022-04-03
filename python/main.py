@@ -12,18 +12,28 @@ def main():
 
     # cluster (client) => db => collection
     db = client.audeci
-    collection = db.readings
+    collection = db.nodes
 
     # noise, temperature, air_quality, humidity, light, pressure
-    reading = Reading()
+    reading = Reading(
+        noise=12,
+        temperature=-1,
+        air_quality=100,
+        pressure=19,
+        humidity=0.8,
+        light=None
+    )
 
     testSensor = Node(
-        id = "",
+        node_id = "TEST_001",
         reading = reading
     )
 
-    # print( dumps( testSensor.toDict() ) )
-    collection.insert_one( testSensor.toDict() )
+
+    collection.find_one_and_update( 
+        { "node_id": testSensor.node_id },
+        { "$push": { "readings": testSensor.toDict() } }
+    )
 
 if __name__ == "__main__":
     main()
