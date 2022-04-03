@@ -55,7 +55,10 @@ function getReadings() {
         dataType: "json",
         type: "GET",
         success: function (nodes) {
-            console.table(nodes)
+            nodes = JSON.parse(nodes);
+            //console.table(nodes)
+            console.log(nodes);
+
 
             map.addSource('nodes_source', {
                 type: 'geojson',
@@ -74,10 +77,10 @@ function getReadings() {
                         //second number is pixel size of the circles
                         'interpolate', ['linear'],
                         ['zoom'],
-                        5, 200,
-                        10, 800,
-                        15, 1500,
-                        20, 4000
+                        5, 5,
+                        10, 8,
+                        15, 15,
+                        20, 40
                     ],
                     'circle-color': {
                         'property': 'reading',
@@ -93,6 +96,40 @@ function getReadings() {
     })
 }
 
+/*
+*   Adds pop up to each circle stating the actual value of the node reading
+*/
+map.on('click', 'nodes_layer', (nodes) => {
+
+    const coords = nodes.features[0].geometry.coordinates.slice();
+    const reading_title = $('#data_select').find(":selected").text();
+    const reading_value = nodes.features[0].properties.reading;
+    let reading_type = "";
+
+    if (reading_value != undefined) {
+         reading_type = "<p>" + reading_value + "</p>";
+    }
+    else{
+        reading_type = "No data available";
+    }
+
+    console.log(coords);
+    console.log(reading_type);
+
+    new mapboxgl.Popup()
+        .setLngLat(coords)
+        .setHTML(reading_type)
+        .addTo(map);
+
+});
+
+map.on('mouseenter', 'nodes_layer', () => {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'nodes_layer', () => {
+    map.getCanvas().style.cursor = '';
+});
 
 
 
