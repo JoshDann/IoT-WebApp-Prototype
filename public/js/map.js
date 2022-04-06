@@ -32,9 +32,11 @@ map.on('load', () => {
  * Get and add all points for readings that match form criteria (for now, just all data)
  */
 $('#form_button_submit').click(function (ev) {
-    // let formData = $('#form_map').serializeArray()
+    //let formData = $('#form_map').serializeArray()
+    //console.log(formData);
     // let queryString = "index.js/data?";
     getReadings()
+    //getApiData();
 })
 
 
@@ -102,23 +104,32 @@ function getReadings() {
 map.on('click', 'nodes_layer', (nodes) => {
 
     const coords = nodes.features[0].geometry.coordinates.slice();
-    const reading_title = $('#data_select').find(":selected").text();
-    const reading_value = nodes.features[0].properties.reading;
-    let reading_type = "";
+    const readingValue = nodes.features[0].properties.reading;
+    console.log(readingValue);
 
-    if (reading_value != undefined) {
-         reading_type = "<p>" + reading_value + "</p>";
+    const reading = $('#data_select').find(":selected").val();
+    console.log(reading);
+
+    let popupContent = "";
+
+    if (readingValue != undefined) {
+        popupContent += "<p>" + reading + ": " + readingValue + "</p>";
+
     }
-    else{
-        reading_type = "No data available";
+    else {
+        popupContent += "<p> No data available </p>";
+    }
+
+    if (reading === "temp" || "pressure" || "humidity") {
+        popupContent += getApiData(reading, coords);
     }
 
     console.log(coords);
-    console.log(reading_type);
+
 
     new mapboxgl.Popup()
         .setLngLat(coords)
-        .setHTML(reading_type)
+        .setHTML(popupContent)
         .addTo(map);
 
 });
@@ -131,5 +142,39 @@ map.on('mouseleave', 'nodes_layer', () => {
     map.getCanvas().style.cursor = '';
 });
 
+function getApiData(reading, coords) {
+    // uses unix time to calculate middle date between two dates
+    const startDateTime = new Date($('#start_date').val()).getTime();
+    const endDateTime = new Date($('#end_date').val()).getTime();
+    const midDateYearBefore = ((startDateTime + endDateTime) / 2) - 29030400; // length of a yearin seconds
+    console.log(midDateYearBefore);
+
+    //converts the date to numerical values for use in api call
+    // (don't think needed anymore but not deleting yet)
+    // const month = midDate.getMonth() + 1; //add 1 as the api months start at 1
+    // const day = midDate.getDate();
+    // console.log("Month: " + month);
+    // console.log("Day: " + day);
+
+    let readingToReturn = "";
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "https://history.openweathermap.org/data/3.0/history/timemachine?",
+        dt: midDateYearBefore,
+        lat: coords[0],
+        lon: coords[1],
+        appid: "207cb067cd18d82dd940ee96f6e448f2",
+        success: function (result) {
+            readingToReturn += "<p>Average for this time of year: " + result.main.reading + "</p>";
+            //return readingToReturn;
+        }
+
+    })
+
+    return readingToReturn;
+
+}
 
 
