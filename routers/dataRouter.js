@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
                 type: "Feature",
                 geometry: {
                     type: "Point",
-                    coordinates: [parseFloat(node.location.lat), parseFloat(node.location.lng)]
+                    coordinates: [parseFloat(node.location.lng), parseFloat(node.location.lat)]
                 },
                 properties: {
                     node_id: node.node_id,

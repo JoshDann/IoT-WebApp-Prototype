@@ -2,7 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const app = express()
 
-const port = 8080
+const port = 5000
 var db_uri = "mongodb+srv://adsu:adsu@rgu-adsu.y36bi.mongodb.net/audeci"
 
 const registerRouter = require("./routers/registerRouter")
