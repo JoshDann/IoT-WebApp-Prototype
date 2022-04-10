@@ -15,18 +15,23 @@ router.use( bodyParser.urlencoded({extended: false}) )
 
 
 router.get("/", (req, res) => {
-    let selectedData = req.query["data-selected"]
+    let query = {
+        metric: req.query.m,
+        datetime: getTimestamp( `${req.query.d}/${req.query.t}` )
+    }
 
     // TODO: add actual query
-    allNodes.find().lean().exec((err, nodes) => {
+    allNodes.find().lean().exec( function(err, nodes) {
         if (err) throw err
 
         let geojson = {
             type: "FeatureCollection",
             features: []
         }
-
+        
         for ( let node of nodes ) {
+            let fReadings = getFilteredReadings(node, query)
+
             geojson.features.push({
                 type: "Feature",
                 geometry: {
@@ -35,7 +40,8 @@ router.get("/", (req, res) => {
                 },
                 properties: {
                     node_id: node.node_id,
-                    reading: getReading(node, selectedData) // eg: "noise", "temperature"
+                    // eg: "noise", "temperature"
+                    reading: getReading(fReadings, query.metric) 
                 }
             })
         }
@@ -46,15 +52,13 @@ router.get("/", (req, res) => {
 /**
  * Returns value for reading geojson property (avoids reading props of undefined)
  * @param {Node} node node object of current iteration
- * @param {string} selectedData string representation of selected data (from request.body)
+ * @param {string} metric string representation of selected data (from request.body)
  * @returns 
  */
-function getReading(node, selectedData) {
+function getReading(readings, metric) {
     let output;
     try {
-        output = getAverageReading( node.readings, selectedData )
-        console.log( "selectedData: " + selectedData )
-        console.log( "Output: " + output )
+        output = getAverageReading(readings, metric)
     }
     catch( err ) {
         output = null
@@ -65,19 +69,40 @@ function getReading(node, selectedData) {
 }
 
 /**
- * Calc and return the MEAN value of given reading in list of readings
- * @param {number[]} readings list of all values for given reading eg: all values for "noise" readings
- * @param {string} selectedData string representation of selected data (from request.body)
- * @returns the mean average of the given list of readings
+ * Method for getting timestamp from date string
+ * @param {string} timeString String representation of date 
+ * @returns Timestamp object of given timeString
  */
-function getAverageReading( readings, selectedData ) {
-    let average = 0
-    for ( let entry of readings ) {
-        // if null, ignore
-        if ( !entry.reading[selectedData] ) { continue } 
-        average += entry.reading[selectedData]
+function getTimestamp( timeString ) {
+    return new Date(timeString).getTime()
+}
+
+function getAverageReading(readings, metric) {
+    let total = 0;
+    for ( let el of readings ) {
+        total += el.reading[metric]
     }
-    return average / readings.length
+    return total/readings.length
+}
+
+function queryCheck( reading, query ) {
+    console.log( reading.timestamp )
+    console.log( query.datetime/1000 )
+    console.log( (reading.timestamp) > (query.datetime/1000) )
+    console.log()
+    return (reading.timestamp) > (query.datetime/1000)
+}
+
+function getFilteredReadings( node, query ) {
+    let output = []
+
+    for ( let reading of node.readings ) {
+        if ( queryCheck( reading, query ) ) {
+            output.push( reading )
+        }
+    }
+
+    return output
 }
 
 module.exports = router
