@@ -3,7 +3,7 @@ import Reading
 from json import dumps
 
 class SensorReading:
-    def __init__( self, node_id=None, reading=Reading ):
+    def __init__(self, node_id=None, reading=Reading):
         self.node_id = node_id
         self.reading = reading
         self.timestamp = dt.now().timestamp()
