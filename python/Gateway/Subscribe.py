@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 
 # below details will need to be changed to work on campus
-broker_address = "node02.myqtthub.com"
+broker_address = "localhost"
 port = 1883
 client_id = "PC-Gateway"
 user = "AudeciGateway"
@@ -24,7 +24,7 @@ def on_connect(client, userdata, flags, rc):
         connected = True
 
     else:
-        print("connection failed")
+        print("connection failed, error code=" + str(rc))
 
 
 def on_message(client, userdata, msg):
@@ -33,7 +33,7 @@ def on_message(client, userdata, msg):
 
 def listen():
     client = mqtt.Client(client_id)
-    client.username_pw_set(user, password)
+    #client.username_pw_set(user, password)
     client.on_connect = on_connect
     client.connect(broker_address, port)
     client.on_message = on_message
@@ -41,7 +41,7 @@ def listen():
     client.loop_forever()
 
     while connected != True:
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     if KeyboardInterrupt:
         client.disconnect()

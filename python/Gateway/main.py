@@ -2,7 +2,7 @@
 import pymongo
 from SensorReading import SensorReading as Node
 from Reading import Reading
-import Subscribe as sub
+import Subscribe as Sub
 
 from json import dumps
 
@@ -37,28 +37,27 @@ def main():
 
 
 def test():
-    from random import randint
-    for i in range(30):
-        node = Node(
-            node_id="TEST_%d" % (randint(1, 5)),
-            reading=Reading(
-                noise=randint(0, 100),
-                air_quality=randint(0, 100),
-                light=randint(0, 100),
-                pressure=randint(0, 100),
-                temperature=randint(0, 100)
-            )
-        )
+    # from random import randint
+    # for i in range(30):
+    #     node = Node(
+    #         node_id="TEST_%d" % (randint(1, 5)),
+    #         reading=Reading(
+    #             noise=randint(0, 100),
+    #             air_quality=randint(0, 100),
+    #             light=randint(0, 100),
+    #             pressure=randint(0, 100),
+    #             temperature=randint(0, 100)
+    #         )
+    #     )
+    #
+    #     print("NODE:%d \nnode id: %s" % (i, node.node_id))
+    #
+    #     collection.find_one_and_update(
+    #         {"node_id": node.node_id},
+    #         {"$push": {"readings": node.toDict()}}
+    #     )
 
-        print("NODE:%d \nnode id: %s" % (i, node.node_id))
-
-        collection.find_one_and_update(
-            {"node_id": node.node_id},
-            {"$push": {"readings": node.toDict()}}
-        )
-    sub.listen()
-
-
+    Sub.listen()
 
 
 if __name__ == "__main__":
