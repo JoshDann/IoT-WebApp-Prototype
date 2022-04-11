@@ -25,17 +25,22 @@ map.addControl(geocoder);
  */
 map.on('load', () => {
     // adds the circles and styles them
-    getReadings()
+    getReadings({
+        time: "00:00",
+        date: "2022-01-01",
+        metric: document.getElementById("data_select").options[document.getElementById("data_select").selectedIndex].value
+    })
 });
 
 /**
  * Get and add all points for readings that match form criteria (for now, just all data)
  */
 $('#form_button_submit').click(function (ev) {
-    //let formData = $('#form_map').serializeArray()
-    //console.log(formData);
-    // let queryString = "index.js/data?";
-    getReadings()
+    getReadings({
+        time: $("#time").val() || "00:00",
+        date: $("#date").val() || "2022-01-01",
+        metric: document.getElementById("data_select").options[document.getElementById("data_select").selectedIndex].value
+    })
     //getApiData();
 })
 
@@ -43,24 +48,21 @@ $('#form_button_submit').click(function (ev) {
 /**
  * Add params later on
  */
-function getReadings() {
-    let urlQuery = "?data-selected=" + document.getElementById("data_select").options[document.getElementById("data_select").selectedIndex].value
+function getReadings(query) {
+    let url = `/data?m=${query.metric}&d=${query.date}&t=${query.time.substr(0,3)}00`
 
     let source = map.getSource('nodes_source');
-    if (source != undefined) {
+    if (source) {
         map.removeLayer('nodes_layer');
         map.removeSource('nodes_source');
     }
 
     $.ajax({
-        url: "/data" + urlQuery,
+        url: url,
         dataType: "json",
         type: "GET",
         success: function (nodes) {
             nodes = JSON.parse(nodes);
-            //console.table(nodes)
-            console.log(nodes);
-
 
             map.addSource('nodes_source', {
                 type: 'geojson',
@@ -121,11 +123,8 @@ map.on('click', 'nodes_layer', (nodes) => {
     }
 
     if (reading === "temp" || "pressure" || "humidity") {
-        popupContent += getApiData(reading, coords);
+        // popupContent += getApiData(reading, coords);
     }
-
-    console.log(coords);
-
 
     new mapboxgl.Popup()
         .setLngLat(coords)
@@ -146,8 +145,8 @@ function getApiData(reading, coords) {
     // uses unix time to calculate middle date between two dates
     const startDateTime = new Date($('#start_date').val()).getTime();
     const endDateTime = new Date($('#end_date').val()).getTime();
-    const midDateYearBefore = ((startDateTime + endDateTime) / 2) - 29030400; // length of a yearin seconds
-    console.log(midDateYearBefore);
+    // const midDateYearBefore = ((startDateTime + endDateTime) / 2) - 29030400; // length of a yearin seconds
+    // console.log(midDateYearBefore);
 
     //converts the date to numerical values for use in api call
     // (don't think needed anymore but not deleting yet)
